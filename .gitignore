@@ -19,3 +19,9 @@ target/
 # Added by cargo
 
 /target
+
+# Don't track .exe files
+EXE_FILES_HERE/*/*.exe
+
+input/*
+!input/words_alpha.txt
