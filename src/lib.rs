@@ -143,3 +143,58 @@ fn stein_gcd(mut a: i64, mut b: i64) -> i64 {
     // Restore common factors of 2.
     a << shift
 }
+
+/// Computes the GCD of a large space-separated input using parallel reduction with Stein's algorithm.
+pub fn reference_gcd_large_capacity(input: &str) -> String {
+    let numbers: Vec<i128> = input
+        .split_whitespace()
+        .filter_map(|s| s.parse::<i128>().ok())
+        .collect();
+
+    if numbers.is_empty() {
+        return "No valid numbers found".to_string();
+    }
+
+    // Use 0 as the identity since gcd(0, x) = |x|
+    let result = numbers
+        .par_iter()
+        .cloned()
+        .reduce(|| 0, stein_gcd_large_capacity);
+
+    result.to_string()
+}
+
+/// Computes the greatest common divisor using Stein's (binary GCD) algorithm.
+fn stein_gcd_large_capacity(mut a: i128, mut b: i128) -> i128 {
+    // Handle simple cases.
+    if a == 0 {
+        return b.abs();
+    }
+    if b == 0 {
+        return a.abs();
+    }
+
+    // Make both numbers non-negative.
+    a = a.abs();
+    b = b.abs();
+
+    // Count the number of common factors of 2.
+    let shift = (a | b).trailing_zeros();
+
+    // Remove factors of 2 from a.
+    a >>= a.trailing_zeros();
+
+    while b != 0 {
+        // Remove factors of 2 from b.
+        b >>= b.trailing_zeros();
+
+        // Ensure a <= b.
+        if a > b {
+            std::mem::swap(&mut a, &mut b);
+        }
+        // Subtract the smaller from the larger.
+        b -= a;
+    }
+    // Restore common factors of 2.
+    a << shift
+}

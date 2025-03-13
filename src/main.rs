@@ -1,7 +1,10 @@
 use std::env;
 use std::fs;
 use std::time::Instant;
+use uiasub_code_benchmark::input_generators::gcd_numbers::generate_gcd_numbers;
+use uiasub_code_benchmark::input_generators::gcd_numbers::generate_gcd_numbers_large_capacity;
 use uiasub_code_benchmark::input_generators::wordlist::wordlist;
+use uiasub_code_benchmark::reference_gcd_large_capacity;
 use uiasub_code_benchmark::{format_time, reference_gcd, reference_reverse, run_executable};
 
 fn main() {
@@ -62,10 +65,17 @@ fn main() {
             )
         }
         "gcd" => {
-            input = fs::read_to_string("./input/custom_wordlist.txt")
-                .expect("Failed to read the input file");
+            input = generate_gcd_numbers(20_000, 1_000_000).expect("Failed to generate numbers.");
             (
                 reference_gcd(&input),
+                String::from("./EXE_FILES_HERE/GREATEST_COMMON_DIVISOR"),
+            )
+        }
+        "gcd_hard" => {
+            input = generate_gcd_numbers_large_capacity(200_000) // u128::MAX
+                .expect("Failed to generate numbers.");
+            (
+                reference_gcd_large_capacity(&input),
                 String::from("./EXE_FILES_HERE/GREATEST_COMMON_DIVISOR"),
             )
         }
