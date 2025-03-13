@@ -1,6 +1,5 @@
 use std::env;
 use std::fs;
-
 use std::time::Instant;
 use uiasub_code_benchmark::input_generators::wordlist::wordlist;
 use uiasub_code_benchmark::{format_time, reference_gcd, reference_reverse, run_executable};
@@ -42,8 +41,10 @@ fn main() {
     // Compute expected output and set the executables directory.
     let (expected_output, executables_dir) = match challenge.as_str() {
         "reverse" => {
-            input = fs::read_to_string("./input/custom_wordlist.txt")
-                .expect("Failed to read the input file");
+            input = match fs::read_to_string("./input/wordlist_20K.txt") {
+                Ok(s) => s,
+                Err(_) => wordlist(20_000).expect("Failed to write custom wordlist."),
+            };
             (
                 reference_reverse(&input),
                 String::from("./EXE_FILES_HERE/REVERSE_STRING"),
@@ -51,8 +52,10 @@ fn main() {
         }
 
         "reverse_large" => {
-            input = fs::read_to_string("./input/custom_wordlist.txt")
-                .expect("Failed to read the input file");
+            input = match fs::read_to_string("./input/wordlist_20M.txt") {
+                Ok(s) => s,
+                Err(_) => wordlist(20_000_000).expect("Failed to write custom wordlist."),
+            };
             (
                 reference_reverse(&input),
                 String::from("./EXE_FILES_HERE/REVERSE_STRING"),

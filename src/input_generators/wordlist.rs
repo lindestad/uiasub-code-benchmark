@@ -6,9 +6,9 @@ use std::io::{BufRead, BufReader, Write};
 
 const RNG_SEED: u64 = 9001; // Used for generating repeatable wordlists without syncing the files over git
 
-pub fn wordlist(n: usize) -> Result<(), Box<dyn Error>> {
+pub fn wordlist(n: usize) -> Result<String, Box<dyn Error>> {
     // Read words from "words_alpha.txt" into a vector
-    let file = File::open("words_alpha.txt")?;
+    let file = File::open("./input/words_alpha.txt")?;
     let reader = BufReader::new(file);
     let mut word_list = Vec::new();
     for line in reader.lines() {
@@ -33,24 +33,24 @@ pub fn wordlist(n: usize) -> Result<(), Box<dyn Error>> {
 
     // Remove the trailing space.
     out_str.pop();
-
     let num_words_str = format_usize(n);
     let fpath = format!("input/wordlist_{num_words_str}.txt");
+
     // Write the output string to "custom_wordlist.txt"
     let mut output_file = File::create(fpath)?;
     output_file.write_all(out_str.as_bytes())?;
 
-    println!("Success.");
-    Ok(())
+    println!("Successfully generated wordlist.");
+    Ok(out_str)
 }
 
 fn format_usize(n: usize) -> String {
     if n >= 1_000_000 {
         // Format as millions (Mega)
-        format!("{:.1}M", n as f64 / 1_000_000.0)
+        format!("{:.0}M", n as f64 / 1_000_000.0)
     } else if n >= 1_000 {
         // Format as thousands (Kilo)
-        format!("{:.1}K", n as f64 / 1_000.0)
+        format!("{:.0}K", n as f64 / 1_000.0)
     } else {
         // Print as-is for smaller numbers
         n.to_string()
