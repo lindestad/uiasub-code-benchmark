@@ -90,9 +90,9 @@ This version generates 20,000 pairs of numbers as input.
 
 Constraints:
 
-\[
+$$
 a, b \in \{1, 2, \dots, 20\,000\}
-\]
+$$
 
 #### Hard Mode
 
@@ -104,13 +104,13 @@ cargo run gcd_hard -n 1 --release
 
 This version generates 1 million pairs of numbers as input. Additionally the max value is drasticly increased:
 
-\[
+$$
 a, b \in \{1, 2, \dots, \texttt{u128::MAX}\}
-\]
+$$
 
-\[
+$$
 \text{Where } \texttt{u128::MAX} = 340\,282\,366\,920\,938\,463\,463\,374\,607\,431\,768\,211\,455
-\]
+$$
 
 ### Additional Details
 
