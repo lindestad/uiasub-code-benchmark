@@ -137,8 +137,8 @@ fn main() {
 
             // Print summary on one line with colors.
             println!(
-                "Summary for {:?}: \n\x1b[36mAvg: {}\x1b[0m | \x1b[32mMin: {}\x1b[0m | \x1b[31mMax: {}\x1b[0m | \x1b[33mStd Dev: {}\x1b[0m",
-                path,
+                "\n\x1b[33mSummary for {:?}: \n\x1b[36mAvg: {}\x1b[0m | \x1b[32mMin: {}\x1b[0m | \x1b[31mMax: {}\x1b[0m | \x1b[33mStd Dev: {}\x1b[0m",
+                entry.file_name(),
                 format_time(average),
                 format_time(min),
                 format_time(max),
