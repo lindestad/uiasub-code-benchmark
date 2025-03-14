@@ -72,7 +72,7 @@ fn main() {
             )
         }
         "gcd_hard" => {
-            input = generate_gcd_numbers_large_capacity(20000) // u128::MAX
+            input = generate_gcd_numbers_large_capacity(200_000) // u128::MAX
                 .expect("Failed to generate numbers.");
             (
                 reference_gcd_large_capacity(&input),

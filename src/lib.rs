@@ -67,20 +67,8 @@ pub fn reference_reverse(input: &str) -> String {
     reversed_chunks.join(" ")
 }
 
-/// Reference implementation for the 'gcd' challenge.
-pub fn reference_gcd_old(input: &str) -> String {
-    let numbers: Vec<i64> = input
-        .split_whitespace()
-        .filter_map(|s| s.parse::<i64>().ok())
-        .collect();
-    if numbers.is_empty() {
-        return "No valid numbers found".to_string();
-    }
-    let result = numbers.into_iter().reduce(gcd).unwrap();
-    result.to_string()
-}
-
 /// Euclid's algorithm for computing the greatest common divisor.
+#[allow(dead_code)]
 fn gcd(a: i64, b: i64) -> i64 {
     let mut a = a.abs();
     let mut b = b.abs();
@@ -103,10 +91,20 @@ pub fn reference_gcd(input: &str) -> String {
         return "No valid numbers found".to_string();
     }
 
-    // Use 0 as the identity since gcd(0, x) = |x|
-    let result = numbers.par_iter().cloned().reduce(|| 0, stein_gcd);
+    let results: Vec<String> = numbers
+        .par_chunks(2)
+        .map(|chunk| {
+            if chunk.len() < 2 {
+                // Return a message for incomplete pairs
+                panic!("Got chunk of length < 2, garbled input?");
+            } else {
+                let result = stein_gcd(chunk[0], chunk[1]);
+                result.to_string()
+            }
+        })
+        .collect();
 
-    result.to_string()
+    results.join(" ")
 }
 
 /// Computes the greatest common divisor using Stein's (binary GCD) algorithm.
@@ -146,7 +144,6 @@ fn stein_gcd(mut a: i64, mut b: i64) -> i64 {
 
 /// Computes the GCD of a large space-separated input using parallel reduction with Stein's algorithm.
 pub fn reference_gcd_large_capacity(input: &str) -> String {
-    println!("Input:\n{}", input);
     let numbers: Vec<u128> = input
         .split_whitespace()
         .filter_map(|s| s.parse::<u128>().ok())
@@ -155,8 +152,6 @@ pub fn reference_gcd_large_capacity(input: &str) -> String {
     if numbers.is_empty() {
         return "No valid numbers found".to_string();
     }
-
-    println!("Len of vec: {}", numbers.len());
 
     let results: Vec<String> = numbers
         .par_chunks(2)
@@ -171,7 +166,6 @@ pub fn reference_gcd_large_capacity(input: &str) -> String {
         })
         .collect();
 
-    println!("Results: {}", results.clone().join(" "));
     results.join(" ")
 }
 

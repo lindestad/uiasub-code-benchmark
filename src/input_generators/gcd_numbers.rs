@@ -48,8 +48,6 @@ pub fn generate_gcd_numbers_large_capacity(n: usize) -> Result<String, Box<dyn E
     if out_str.ends_with('\n') {
         out_str.pop();
     }
-    println!("Generating:");
-    println!("{}", &out_str.clone());
     Ok(out_str)
 }
 
