@@ -80,7 +80,10 @@ fn main() {
             )
         }
         _ => {
-            eprintln!("Unknown challenge: {}. Use 'reverse' or 'gcd'.", challenge);
+            eprintln!(
+                "Unknown challenge: {}. Use [reverse|reverse_large|gcd|gcd_hard].",
+                challenge
+            );
             std::process::exit(1);
         }
     };
