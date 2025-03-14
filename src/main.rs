@@ -3,8 +3,10 @@ use std::fs;
 use std::time::Instant;
 use uiasub_code_benchmark::input_generators::gcd_numbers::generate_gcd_numbers;
 use uiasub_code_benchmark::input_generators::gcd_numbers::generate_gcd_numbers_large_capacity;
+use uiasub_code_benchmark::input_generators::obelisk::gen_obelisks;
 use uiasub_code_benchmark::input_generators::wordlist::wordlist;
 use uiasub_code_benchmark::reference_gcd_large_capacity;
+use uiasub_code_benchmark::reference_obelisk_count;
 use uiasub_code_benchmark::{format_time, reference_gcd, reference_reverse, run_executable};
 
 fn main() {
@@ -12,7 +14,7 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
         eprintln!(
-            "Usage: {} [reverse|reverse_large|gcd|gcd_hard] [-n <num_runs>]",
+            "Usage: {} [reverse|reverse_large|gcd|gcd_hard|obelisk|obelisk_hard] [-n <num_runs>]",
             args[0]
         );
         std::process::exit(1);
@@ -79,9 +81,31 @@ fn main() {
                 String::from("./EXE_FILES_HERE/GREATEST_COMMON_DIVISOR"),
             )
         }
+        "obelisk" => {
+            input = gen_obelisks();
+            let obelisks: Vec<u128> = input
+                .split(" ")
+                .map(|obelisk| obelisk.parse::<u128>().unwrap())
+                .collect();
+            (
+                reference_obelisk_count(&obelisks, 25).to_string(),
+                String::from("./EXE_FILES_HERE/OBELISK"),
+            )
+        }
+        "obelisk_hard" => {
+            input = gen_obelisks();
+            let obelisks: Vec<u128> = input
+                .split(" ")
+                .map(|obelisk| obelisk.parse::<u128>().unwrap())
+                .collect();
+            (
+                reference_obelisk_count(&obelisks, 100).to_string(),
+                String::from("./EXE_FILES_HERE/OBELISK"),
+            )
+        }
         _ => {
             eprintln!(
-                "Unknown challenge: {}. Use [reverse|reverse_large|gcd|gcd_hard].",
+                "Unknown challenge: {}. Use [reverse|reverse_large|gcd|gcd_hard|obelisk|obelisk_hard].",
                 challenge
             );
             std::process::exit(1);
