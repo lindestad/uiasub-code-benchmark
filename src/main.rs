@@ -89,7 +89,7 @@ fn main() {
                 .collect();
             (
                 reference_obelisk_count(&obelisks, 25).to_string(),
-                String::from("./EXE_FILES_HERE/OBELISK"),
+                String::from("./EXE_FILES_HERE/OBELISK_EASY"),
             )
         }
         "obelisk_hard" => {
@@ -100,7 +100,7 @@ fn main() {
                 .collect();
             (
                 reference_obelisk_count(&obelisks, 100).to_string(),
-                String::from("./EXE_FILES_HERE/OBELISK"),
+                String::from("./EXE_FILES_HERE/OBELISK_HARD"),
             )
         }
         _ => {
