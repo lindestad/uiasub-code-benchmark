@@ -145,21 +145,27 @@ Each time you pull the lever, the obelisks transform. They follow a strict set o
 
 The arrangement of obelisks is always given as if they are on a single straight line.
 You will be given a puzzle input in STDIN, that looks something like this:
+
 `5342 17`
 
 After 1 pull the obelisks now look like this:
+
 `53 42 1 7`
 
 After 2 pulls:
+
 `5 3 4 2 2404 3 2 3 2`
 
 After 3 pulls:
+
 `12020 7212 9616 4808 24 4 7212 4808 7212 4808`
 
 After 4 pulls:
+
 `28896080 72 12 96 16 48 8 2 4 9616 72 12 48 8 72 12 48 8`
 
 After 5 pulls:
+
 `2889 6080 7 2 1 2 9 6 1 6 4 8 19232 4808 9616 96 16 7 2 1 2 4 8 19232 7 2 1 2 4 8 19232`
 
 Your goal is to return to STDOUT the *number* of obelisk there are after $n$ pulls of the lever.
