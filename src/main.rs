@@ -139,6 +139,13 @@ fn main() {
                 let pass = output.trim() == expected_output.trim();
                 if !pass {
                     all_passed = false;
+                    if run == 1 && (matches!(challenge.as_str(), "obelisk" | "obelisk_hard")) {
+                        if output.trim() > expected_output.trim() {
+                            println!("INFO: The provided answer was too high.");
+                        } else {
+                            println!("INFO: The provided answer was too low.")
+                        }
+                    }
                 }
                 // Print run result: green if pass, red if fail.
                 if pass {
