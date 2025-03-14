@@ -155,8 +155,6 @@ fn main() {
                     // Red: \x1b[31m, Reset: \x1b[0m
                     println!("\x1b[31mRun {}: {}\x1b[0m", run, formatted_time);
                     println!("❌ Output incorrect on run {}.", run);
-                    println!("Expected Output:\n{}", expected_output);
-                    println!("Actual Output:\n{}", output);
                 }
             }
 
