@@ -50,9 +50,9 @@ This version gives a string of 20 million words (that's ~200MB of raw text). Goo
 
 This challenge involves finding the greatest common divisor (GCD) of two numbers, $a$ and $b$.
 
-\[
+$$
 a, b \in \mathbb{Z}_{>0}
-\]
+$$
 
 ($a$ and $b$ are positive integers).
 
