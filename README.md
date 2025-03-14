@@ -179,6 +179,8 @@ Given a set of obelisks from STDIN:
 How many obelisks are there after $n = 25$ pulls of the lever?
 Return the answer to STDOUT. For the example above where the initial input is `5342 17`, the answer is `255042`.
 
+Your executable should be placed in `EXE_FILES_HERE/OBELISK_EASY/`.
+
 Run:
 
 ```sh
@@ -190,6 +192,8 @@ cargo run obelisk -n 1 --release
 Given a set of obelisks from STDIN:
 How many obelisk are there after $n = 100$ pulls of the lever?
 Return the answer to STDOUT. For the example above where the initial input is `5342 17`, the answer is `187395285808756316168`.
+
+Your executable should be placed in `EXE_FILES_HERE/OBELISK_HARD/`.
 
 Run:
 
