@@ -1,6 +1,7 @@
 pub mod input_generators;
 
 use rayon::prelude::*;
+use std::collections::{HashMap, HashSet};
 use std::io::Write;
 use std::path::Path;
 use std::process::{Command, Stdio};
@@ -198,4 +199,95 @@ fn stein_gcd_large_capacity(mut a: u128, mut b: u128) -> u128 {
     }
     // Restore common factors of 2.
     a << shift
+}
+
+/// Calculate how many obelisks there are after `pull_count`
+/// starting from an initial collection of obelisks.
+pub fn reference_obelisk_count(obelisks: &[u128], pull_count: usize) -> u128 {
+    fn digit_count(mut x: u128) -> usize {
+        if x == 0 {
+            return 1;
+        }
+        let mut count = 0;
+        while x > 0 {
+            x /= 10;
+            count += 1;
+        }
+        count
+    }
+
+    fn split_obelisk_two(x: u128) -> (u128, u128) {
+        let s = x.to_string();
+        let half = s.len() / 2;
+        let left_str = &s[..half];
+        let right_str = &s[half..];
+        let left_num = left_str.parse::<u128>().unwrap();
+        let right_num = right_str.parse::<u128>().unwrap();
+        (left_num, right_num)
+    }
+    fn next_obelisks(n: u128) -> Vec<u128> {
+        if n == 0 {
+            // rule #1
+            vec![1]
+        } else if n == 7 {
+            // rule #2
+            vec![3, 2, 3, 2]
+        } else {
+            let dcount = digit_count(n);
+            if dcount % 2 == 0 {
+                // rule #2 (even digit count): split
+                let (l, r) = split_obelisk_two(n);
+                vec![l, r]
+            } else {
+                // rule #3 (odd digit count, nonzero): multiply
+                vec![n * 2404]
+            }
+        }
+    }
+
+    fn expand(
+        n: u128,
+        t: usize,
+        memo: &mut HashMap<(u128, usize), u128>,
+        in_progress: &mut HashSet<(u128, usize)>,
+    ) -> u128 {
+        // Base case
+        if t == 0 {
+            return 1;
+        }
+
+        // If it's already in memo, return cached value.
+        if let Some(&cached) = memo.get(&(n, t)) {
+            return cached;
+        }
+
+        // Cycle detection: if we revisit (n, t) before finishing,
+        // we've detected a cycle. Does not seem to occur so left as a panic.
+        if !in_progress.insert((n, t)) {
+            panic!(
+                "Cycle detected at obelisk = {n}, t = {t} -- implement cycle skipping here if this ever panics."
+            );
+        }
+
+        // Expand to child obelisks, then sum their expansions.
+        let children = next_obelisks(n);
+        let mut sum = 0;
+        for &child in &children {
+            sum += expand(child, t - 1, memo, in_progress);
+        }
+
+        // Mark (n,t) done; store in memo and remove from "in progress"
+        memo.insert((n, t), sum);
+        in_progress.remove(&(n, t));
+
+        sum
+    }
+    let mut memo = HashMap::<(u128, usize), u128>::new();
+    let mut in_progress = HashSet::<(u128, usize)>::new();
+
+    let mut total = 0;
+    for &initial_obelisk in obelisks {
+        total += expand(initial_obelisk, pull_count, &mut memo, &mut in_progress);
+    }
+    total
 }
